@@ -6,32 +6,40 @@
 </head>
 <body>
   <h1>Parent (GitHub Pages)</h1>
-  <p>This page embeds the <strong>child</strong> on <code>http://localhost:8080</code> as a third‑party iframe.</p>
+  <p>Embedding <strong>http://localhost:8080/child.html</strong> as a third‑party iframe.</p>
 
   <iframe
     id="childFrame"
     src="http://localhost:8080/child.html"
     width="600"
-    height="500"
+    height="550"
     sandbox="allow-scripts allow-same-origin allow-storage-access-by-user-activation">
   </iframe>
 
   <script>
-    // Only accept messages from our localhost child
     const CHILD_ORIGIN = 'http://localhost:8080';
+    const frame = document.getElementById('childFrame');
 
     window.addEventListener('message', e => {
       if (e.origin !== CHILD_ORIGIN) return;
 
-      const msg = e.data;
-      // Popup request
-      if (msg && msg.action === 'openPopup') {
-        const popupUrl = `${CHILD_ORIGIN}/child.html?popup=1`;
-        window.open(popupUrl, 'saa-popup', 'width=500,height=500');
+      // 1) Relay popup‑done back into the iframe
+      if (e.data === 'saa-popup-done') {
+        frame.contentWindow.postMessage('saa-popup-done', CHILD_ORIGIN);
+        return;
       }
-      // Redirect request
-      else if (msg && msg.action === 'redirect' && msg.url) {
-        window.location.href = msg.url;
+
+      // 2) Handle the child's “openPopup” request
+      if (e.data && e.data.action === 'openPopup') {
+        window.open(
+          `${CHILD_ORIGIN}/child.html?popup=1`,
+          'saa-popup',
+          'width=500,height=500'
+        );
+      }
+      // 3) Handle the child's “redirect” request
+      else if (e.data && e.data.action === 'redirect' && e.data.url) {
+        window.location.href = e.data.url;
       }
     });
   </script>
