@@ -9,12 +9,10 @@
   <p>Embedding <strong>http://localhost:8080/child.html</strong> as a third‑party iframe.</p>
 
   <iframe
-    id="childFrame"
-    src="http://localhost:8080/child.html"
-    width="600"
-    height="550"
-    sandbox="allow-scripts allow-same-origin allow-storage-access-by-user-activation">
-  </iframe>
+  src="http://localhost:8080/child.html"
+  sandbox="allow-scripts allow-same-origin allow-storage-access-by-user-activation"
+  width="600" height="400">
+</iframe>
 
   <script>
     const CHILD_ORIGIN = 'http://localhost:8080';
