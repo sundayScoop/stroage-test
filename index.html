@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Storage Access API Tester – Parent</title>
+</head>
+<body>
+  <h1>Parent (GitHub Pages)</h1>
+  <p>This page embeds the <strong>child</strong> on <code>http://localhost:8080</code> as a third‑party iframe.</p>
+
+  <!--
+    We sandbox the iframe but allow:
+      • scripts (so our JS runs)
+      • same-origin (so cookies/localStorage work under localhost origin)
+      • storage-access-by-user-activation (so requestStorageAccess() can prompt)
+    :contentReference[oaicite:0]{index=0}
+  -->
+  <iframe
+    id="childFrame"
+    src="http://localhost:8080/child.html"
+    width="600"
+    height="400"
+    sandbox="allow-scripts allow-same-origin allow-storage-access-by-user-activation">
+  </iframe>
+</body>
+</html>
